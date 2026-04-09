@@ -1,39 +1,59 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tamara Education — Building Tomorrow's Innovators</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
-</head>
-<body>
+// ── PAGE NAVIGATION ──
+function showPage(id) {
+  // hide all pages
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  // show target
+  var page = document.getElementById('page-' + id);
+  if (page) page.classList.add('active');
 
-<!-- NAV -->
-<nav id="mainNav">
-  <a class="logo" onclick="navigate('home')">
-    <img src="images/logo.png" alt="Tamara Education Logo" style="height:44px;width:44px;border-radius:50%;object-fit:cover;">
-    <div>
-      <div class="logo-text">Tamara <span>Education</span></div>
-      <div class="logo-sub">Building Tomorrow's Innovators</div>
-    </div>
-  </a>
-  <div class="nav-links">
-    <a onclick="navigate('home')" id="nav-home" class="active">Home</a>
-    <a onclick="navigate('about')" id="nav-about">About Us</a>
-    <a class="soon">Projects (Soon)</a>
-    <a onclick="navigate('hackathon')" id="nav-hackathon">Hackathon</a>
-    <a onclick="navigate('faq')" id="nav-faq">Help & FAQs</a>
-    <a onclick="navigate('contact')" id="nav-contact" class="nav-cta">Contact Us</a>
-  </div>
-  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
-    <span></span><span></span><span></span>
-  </div>
-</nav>
+  // update nav active state
+  document.querySelectorAll('.nl').forEach(a => a.classList.remove('active'));
+  var navLink = document.getElementById('nl-' + id);
+  if (navLink) navLink.classList.add('active');
 
-<div class="mobile-menu" id="mobileMenu">
-  <a onclick="navigate('home');toggleMenu()">Home</a>
+  // scroll to top
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── HAMBURGER MENU ──
+function toggleNav() {
+  var menu = document.getElementById('mobileNav');
+  menu.classList.toggle('open');
+}
+
+// ── CONTACT FORM ──
+function submitForm() {
+  var fname   = document.getElementById('fname').value.trim();
+  var email   = document.getElementById('email').value.trim();
+  var message = document.getElementById('message').value.trim();
+
+  if (!fname || !email || !message) {
+    alert('Please fill in all required fields: First Name, Email, and Message.');
+    return;
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    alert('Please enter a valid email address.');
+    return;
+  }
+
+  document.getElementById('formBody').style.display = 'none';
+  document.getElementById('formSuccess').style.display = 'block';
+}
+
+// ── NAV SHADOW ON SCROLL ──
+window.addEventListener('scroll', function () {
+  var nav = document.getElementById('navbar');
+  if (window.scrollY > 10) {
+    nav.style.boxShadow = '0 2px 20px rgba(0,0,0,0.3)';
+  } else {
+    nav.style.boxShadow = 'none';
+  }
+});
+
+// ── INIT ──
+document.addEventListener('DOMContentLoaded', function () {
+  showPage('home');
+});
   <a onclick="navigate('about');toggleMenu()">About Us</a>
   <a style="opacity:0.4">Projects (Soon)</a>
   <a onclick="navigate('hackathon');toggleMenu()">Hackathon</a>
