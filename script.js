@@ -1,88 +1,56 @@
-// ── NAVIGATION ──
-  function navigate(page) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.getElementById('page-' + page).classList.add('active');
-    document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
-    const navEl = document.getElementById('nav-' + page);
-    if (navEl) navEl.classList.add('active');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    setTimeout(initReveal, 100);
-    // Reset FAQ sections when navigating to FAQ
-    if (page === 'faq') {
-      showFAQSection('basics');
-    }
+// ── PAGE NAVIGATION ──
+function showPage(id) {
+  // hide all pages
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  // show target
+  var page = document.getElementById('page-' + id);
+  if (page) page.classList.add('active');
+
+  // update nav active state
+  document.querySelectorAll('.nl').forEach(a => a.classList.remove('active'));
+  var navLink = document.getElementById('nl-' + id);
+  if (navLink) navLink.classList.add('active');
+
+  // scroll to top
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── HAMBURGER MENU ──
+function toggleNav() {
+  var menu = document.getElementById('mobileNav');
+  menu.classList.toggle('open');
+}
+
+// ── CONTACT FORM ──
+function submitForm() {
+  var fname   = document.getElementById('fname').value.trim();
+  var email   = document.getElementById('email').value.trim();
+  var message = document.getElementById('message').value.trim();
+
+  if (!fname || !email || !message) {
+    alert('Please fill in all required fields: First Name, Email, and Message.');
+    return;
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    alert('Please enter a valid email address.');
+    return;
   }
 
-  // ── HAMBURGER ──
-  function toggleMenu() {
-    document.getElementById('mobileMenu').classList.toggle('open');
+  document.getElementById('formBody').style.display = 'none';
+  document.getElementById('formSuccess').style.display = 'block';
+}
+
+// ── NAV SHADOW ON SCROLL ──
+window.addEventListener('scroll', function () {
+  var nav = document.getElementById('navbar');
+  if (window.scrollY > 10) {
+    nav.style.boxShadow = '0 2px 20px rgba(0,0,0,0.3)';
+  } else {
+    nav.style.boxShadow = 'none';
   }
+});
 
-  // ── FAQ TOGGLE ──
-  function toggleFAQ(el) {
-    const item = el.parentElement;
-    item.classList.toggle('open');
-  }
-
-  function toggleFAQSection(id) {
-    showFAQSection(id);
-  }
-
-  function showFAQSection(id) {
-    const sections = ['basics','registration','ideas','certificates','mentorship','general'];
-    sections.forEach(s => {
-      const el = document.getElementById('faq-' + s);
-      if (el) el.style.display = s === id ? 'block' : 'none';
-    });
-    // Scroll to accordion
-    const target = document.getElementById('faq-' + id);
-    if (target) {
-      setTimeout(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
-    }
-  }
-
-  // ── CONTACT FORM ──
-  function submitForm() {
-    const fname = document.getElementById('fname').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const message = document.getElementById('message').value.trim();
-
-    if (!fname || !email || !message) {
-      alert('Please fill in all required fields (Name, Email, and Message).');
-      return;
-    }
-    if (!/\S+@\S+\.\S+/.test(email)) {
-      alert('Please enter a valid email address.');
-      return;
-    }
-
-    document.getElementById('contactFormWrap').style.display = 'none';
-    document.getElementById('formSuccess').style.display = 'block';
-  }
-
-  // ── SCROLL REVEAL ──
-  function initReveal() {
-    const reveals = document.querySelectorAll('.page.active .reveal');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
-      });
-    }, { threshold: 0.1 });
-    reveals.forEach(el => observer.observe(el));
-  }
-
-  // ── NAV SCROLL EFFECT ──
-  window.addEventListener('scroll', () => {
-    const nav = document.getElementById('mainNav');
-    nav.style.background = window.scrollY > 50
-      ? 'rgba(15,23,41,1)'
-      : 'rgba(15,23,41,0.96)';
-  });
-
-  // ── INIT ──
-  document.addEventListener('DOMContentLoaded', () => {
-    initReveal();
-    showFAQSection('basics');
-  });
+// ── INIT ──
+document.addEventListener('DOMContentLoaded', function () {
+  showPage('home');
+});
